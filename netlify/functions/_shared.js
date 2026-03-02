@@ -8,11 +8,10 @@ export function supabaseAdmin() {
 }
 
 export function jsonResponse(statusCode, data) {
-  return {
-    statusCode,
+  return new Response(JSON.stringify(data), {
+    status: statusCode,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  };
+  });
 }
 
 export function badRequest(message, extra = {}) {
