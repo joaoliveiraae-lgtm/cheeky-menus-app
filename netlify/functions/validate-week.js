@@ -13,9 +13,13 @@ REGRAS OBRIGATÓRIAS:
 5) Em missing_required_fields usa formato "terca.sopa", "quarta.peixe", etc.
 6) Responde APENAS com JSON válido. Nada fora do JSON.`;
 
-export default async (req) => {
+export default async (request) => {
   try {
-    const body = JSON.parse(req.body || "{}");
+    if (request.method !== "POST") {
+      return jsonResponse(405, { error: "Method not allowed. Use POST." });
+    }
+
+    const body = await request.json().catch(() => ({}));
     const { chef_name, operational_level, week_label = "", raw_week_text } = body;
 
     if (!chef_name || !operational_level || !raw_week_text) {
